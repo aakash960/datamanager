@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JInternalFrame;
 import java.awt.Component;
 import java.awt.Toolkit;
+import java.awt.Button;
 
 public class Aakash1 extends JFrame {
 
@@ -101,29 +102,36 @@ public class Aakash1 extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				rs = st.executeQuery("select * from admin_data");
-				rs.next();
-				 String User_Id = rs.getString(1);
-				 int fdbid=Integer.parseInt(User_Id);
-				 String fdpass = rs.getString(2);
 				String Id=textField_1.getText();
-				String pass=textField_2.getText();
+				int fdbid=Integer.parseInt(Id);
+				PreparedStatement pstl=con.prepareStatement("select * from admin_data where Used_Id=?");
+				pstl.setInt(1, fdbid);
+				ResultSet rs=pstl.executeQuery();
+				rs.next();
+				Statement s=con.createStatement();
+				ResultSet count=s.executeQuery("select count(*) from admin_data where Used_Id="+fdbid);
+				count.next();
 				
-				int ftid=Integer.parseInt(Id);
+				String pass=textField_2.getText();
+				String fdpass = rs.getString(2);
+				if(Integer.parseInt(count.getString(1))==0)
+					JOptionPane.showMessageDialog(null,"INCORRECT USER_ID OR USER_ID DOESN'T EXIST", "",JOptionPane.INFORMATION_MESSAGE);
+
+				
 				System.out.println(fdbid);
 				System.out.println(fdpass);
-				 if(ftid==fdbid && pass.equals(fdpass)) {
+				 if(pass.equals(fdpass)) {
 					 new Aakash3();
 					 dispose();
 									}
 				 else {
 					 
-					 JOptionPane.showMessageDialog(null,"Invald user id or Password", "",JOptionPane.ERROR_MESSAGE);
+					 JOptionPane.showMessageDialog(null,"Please enter the correct password", "",JOptionPane.ERROR_MESSAGE);
 					 
 					 }
 				 }
 				catch(Exception tf) {
-					
+					System.out.println(tf);
 				}
 			}
 		});
@@ -142,7 +150,7 @@ public class Aakash1 extends JFrame {
 						.addComponent(btnNewButton)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(89)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(4)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -152,11 +160,11 @@ public class Aakash1 extends JFrame {
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(textField_2)
 										.addComponent(textField_1)))
-								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(55)
-									.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
 									.addGap(28)))))
-					.addContainerGap(128, Short.MAX_VALUE))
+					.addContainerGap(134, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -182,5 +190,4 @@ public class Aakash1 extends JFrame {
 		
 		
 	}
-	
 }
