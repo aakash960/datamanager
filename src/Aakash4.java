@@ -70,8 +70,8 @@ public class Aakash4 {
 		 ResultSet rs;
 		
 		 url = "jdbc:mysql://localhost:3306/company-database";
-        uname = "root";
-        pass = "Aakash";
+        uname = "";
+        pass = "";
         Class.forName("com.mysql.cj.jdbc.Driver");
         con= DriverManager.getConnection(url, uname, pass);
         st = con.createStatement();
